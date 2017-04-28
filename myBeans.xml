@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<bean id="person" class="net.lezhang.spring.beanbasic.Person"></bean>
+
+	<bean id="person1" class="net.lezhang.spring.beanbasic.Person"
+		init-method="onCreate" destroy-method="onDestroy">
+		<constructor-arg value="1" name="id" type="int"></constructor-arg>
+		<constructor-arg value="James Bond" name="name" type="String"></constructor-arg>
+		<property name="taxId" value="123"></property>
+		<property name="name">
+			<value>New Name</value>
+		</property>
+		<!-- injection of another bean -->
+		<property name="address" ref="myAddress" />
+	</bean>
+
+	<bean id="myAddress" class="net.lezhang.spring.beanbasic.Address"></bean>
+
+	<context:property-placeholder location="test.properties" />
+	<bean id="person2" class="net.lezhang.spring.beanbasic.Person"
+		p:id="2">
+		<!-- equivalent way to set a property using p namespace <property name="id" 
+			value="2"></property> -->
+		<property name="name" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="testField" value="${testkey}" />
+		<property name="favFruits">
+			<list>
+				<value>apple</value>
+				<value>orange</value>
+				<value>banana</value>
+				<value>apple</value>
+			</list>
+		</property>
+		<property name="friends">
+			<list>
+				<ref bean="person" />
+				<ref bean="person3" />
+				<ref bean="person4" />
+				<!-- inner bean. note the id is conflicting, but since its scope is limited, 
+					it is ok -->
+				<bean id="person1" class="net.lezhang.spring.beanbasic.Person"
+					p:id="666" p:name="SecretFriend" />
+			</list>
+		</property>
+		<property name="favBooks">
+			<props>
+				<prop key="Cixin Liu">Three Body</prop>
+				<prop key="Tolkin">The Lord of the Rings</prop>
+			</props>
+		</property>
+		<property name="relations">
+			<map>
+				<entry key="wife" value-ref="person" />
+				<entry key="son" value-ref="person3" />
+			</map>
+		</property>
+
+	</bean>
+
+	<bean id="person3" class="net.lezhang.spring.beanbasic.Person"
+		factory-method="getInstance">
+	</bean>
+
+	<bean id="personFactory" class="net.lezhang.spring.beanbasic.PersonFactory"></bean>
+
+	<bean id="person4" class="net.lezhang.spring.beanbasic.Person"
+		factory-bean="personFactory" factory-method="getInstance">
+		<constructor-arg value="4" name="id" type="int"></constructor-arg>
+	</bean>
+
+
+
+	<bean id="logger" class="net.lezhang.spring.autowire.Logger"
+		autowire="byType" />
+
+	<bean id="consoleWriter" class="net.lezhang.spring.autowire.ConsoleWriter"
+		primary="true">
+		<qualifier value="console1"></qualifier>
+	</bean>
+	<bean name="fileWriter" class="net.lezhang.spring.autowire.FileWriter" />
+
+	<bean id="logger2" class="net.lezhang.spring.autowire.Logger2"
+		autowire="byName" />
+
+	<bean id="logger3" class="net.lezhang.spring.autowire.Logger3"
+		autowire="constructor" />
+
+	<context:annotation-config></context:annotation-config>
+	<bean id="loggerWithAnnotation" class="net.lezhang.spring.autowire.LoggerWithAutowire" />
+
+	<bean id="consoleWriter2" class="net.lezhang.spring.autowire.ConsoleWriter">
+		<qualifier value="console2"></qualifier>
+	</bean>
+
+	<context:component-scan
+		base-package="net.lezhang.spring.autowire">
+	</context:component-scan>
+</beans>

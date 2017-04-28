@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byType"
+	default-autowire-candidates="consoleWriter,*Writer">
+
+	<bean id="person" class="net.lezhang.spring.beanbasic.Person"></bean>
+
+	<bean id="logger" class="net.lezhang.spring.autowire.Logger" />
+
+	<bean id="consoleWriter" class="net.lezhang.spring.autowire.ConsoleWriter"
+		primary="true" />
+	<bean name="fileWriter" class="net.lezhang.spring.autowire.FileWriter" />
+	
+	<!-- note the following beans will be ignored -->
+	
+	<bean name="anotherConsoleWriter" class="net.lezhang.spring.autowire.ConsoleWriter" />
+	<!-- because the other bean has primary set to true -->
+
+	<bean name="fileWriterAnother" class="net.lezhang.spring.autowire.FileWriter" />
+	<!-- because excluded from default-autowire-candidates -->
+	
+	<bean name="anotherFileWriter" class="net.lezhang.spring.autowire.FileWriter"
+		autowire-candidate="false" />
+	<!-- because autowire-candidates is set to false -->
+
+</beans>
