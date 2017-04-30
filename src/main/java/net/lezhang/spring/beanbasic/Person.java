@@ -54,7 +54,8 @@ public class Person {
         System.out.println("Creating person using factory method");
         return new Person(555, "FactoryBorn");
     }
-    
+
+
     // init method
     public void onCreate() {
         System.out.println("Person created: " + name);

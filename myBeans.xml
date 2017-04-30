@@ -25,8 +25,9 @@
 	<context:property-placeholder location="test.properties" />
 	<bean id="person2" class="net.lezhang.spring.beanbasic.Person"
 		p:id="2">
-		<!-- equivalent way to set a property using p namespace <property name="id" 
-			value="2"></property> -->
+		<!-- equivalent way to set a property using p namespace
+		<property name="id" value="2"></property>
+		-->
 		<property name="name" value="${jdbc.user}"></property>
 		<property name="password" value="${jdbc.password}"></property>
 		<property name="testField" value="${testkey}" />
@@ -43,8 +44,8 @@
 				<ref bean="person" />
 				<ref bean="person3" />
 				<ref bean="person4" />
-				<!-- inner bean. note the id is conflicting, but since its scope is limited, 
-					it is ok -->
+				<!-- inner bean. note the id is conflicting,
+				but since its scope is limited, it is ok -->
 				<bean id="person1" class="net.lezhang.spring.beanbasic.Person"
 					p:id="666" p:name="SecretFriend" />
 			</list>
@@ -75,7 +76,19 @@
 		<constructor-arg value="4" name="id" type="int"></constructor-arg>
 	</bean>
 
+	<!-- Testing SPEL -->
+	<bean id="person5" class="net.lezhang.spring.beanbasic.Person">
+		<property name="id" value="#{2+3}" />
+		<property name="name" value="#{new java.util.Date().toString()}" />
+		<property name="taxId" value="#{T(Math).PI}" /> <!-- calling static property / method -->
+		<property name="password" value="#{textGenerator.text?.length()}" />
+		<property name="testField" value="#{'testtest: ' + textGenerator.getText() + ' ' + textGenerator.text}" />
+	</bean>
 
+	<bean id="textGenerator" class="net.lezhang.spring.property.RandomText">
+	</bean>
+
+	<!-- The following are testing autowire -->
 
 	<bean id="logger" class="net.lezhang.spring.autowire.Logger"
 		autowire="byType" />

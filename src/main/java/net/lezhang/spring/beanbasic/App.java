@@ -48,6 +48,12 @@ public class App
         Person person4 = (Person)context.getBean("person4");
         person4.speak();
 
+        System.out.println("Testing SPEL...");
+        Person person5 = (Person)context.getBean("person5");
+        person5.speak();
+
+
+
         System.out.println("Testing autowire by type..." );
         Logger logger = (Logger)context.getBean("logger");
         logger.writeConsole("Hello console");
@@ -78,7 +84,9 @@ public class App
 
 
         ((FileSystemXmlApplicationContext)context).close();
-        
+
+
+
         // other ways to find bean config xml
         System.out.println("Testing other config source...");
         
@@ -89,7 +97,6 @@ public class App
         logger = (Logger)context1.getBean("logger");
         logger.writeConsole("Hello console");
         logger.writeFile("Hello file");
-
         
         ((FileSystemXmlApplicationContext)context1).close();
 

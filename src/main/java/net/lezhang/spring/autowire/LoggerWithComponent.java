@@ -18,10 +18,10 @@ public class LoggerWithComponent {
     public void setFileWriter(FileWriter fileWriter) { this.fileWriter = fileWriter; }
 
     @Autowired
-    public void setSomeProperty(@Value("valuevaluevalue") String s) {
+    public void setSomeProperty(@Value("valuevaluevalue: #{textGenerator.text}") String s) {
         this.someProperty = s;
     }
-    
+
     public void writeConsole(String string) {
         System.out.println("in component logger class");
         System.out.println("the property: " + someProperty);
@@ -30,7 +30,6 @@ public class LoggerWithComponent {
     }
 
     public void writeFile(String string) {
-        System.out.println("in component logger class");
         fileWriter.log(string);
         
     }
