@@ -4,6 +4,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import net.lezhang.spring.autowire.ConsoleWriter;
+import net.lezhang.spring.autowire.FileWriter;
 import net.lezhang.spring.autowire.Logger;
 import net.lezhang.spring.autowire.Logger2;
 import net.lezhang.spring.autowire.Logger3;
@@ -18,7 +20,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        System.out.println( "App: Hello World!" );
         
         ApplicationContext context = new FileSystemXmlApplicationContext("myBeans.xml");
         Person person = (Person)context.getBean("person");
@@ -69,7 +71,7 @@ public class App
         logger3.writeConsole("Hello console");
         logger3.writeFile("Hello file");
 
-        System.out.println("Testing autowire annotations..." );
+        System.out.println("\nTesting @Autowire annotations..." );
         LoggerWithAutowire loggerWA = (LoggerWithAutowire)context.getBean("loggerWithAnnotation");
         loggerWA.writeConsole("Hello console");
         loggerWA.writeFile("Hello file");
@@ -88,9 +90,9 @@ public class App
 
 
         // other ways to find bean config xml
-        System.out.println("Testing other config source...");
+        System.out.println("----- Testing other config source...");
         
-        ApplicationContext context1 = new FileSystemXmlApplicationContext("src/main/java/net/lezhang/spring/beanbasic/config/myBeans1.xml");
+        ApplicationContext context1 = new FileSystemXmlApplicationContext("src/main/java/net/lezhang/spring/beanbasic/xmlconfig/myBeans1.xml");
         person = (Person)context1.getBean("person");
         person.speak();
         
@@ -98,13 +100,20 @@ public class App
         logger.writeConsole("Hello console");
         logger.writeFile("Hello file");
         
+        // beans not used for autowire
+        ConsoleWriter consoleWriter = (ConsoleWriter)context1.getBean("anotherConsoleWriter");
+        consoleWriter.log("anotherConsoleWriter");
+        FileWriter fileWriterAnother = (FileWriter)context1.getBean("fileWriterAnother");
+        fileWriterAnother.log("fileWriterAnother");
+        FileWriter anotherFileWriter = (FileWriter)context1.getBean("anotherFileWriter");
+        anotherFileWriter.log("anotherFileWriter");
         ((FileSystemXmlApplicationContext)context1).close();
 
-        ApplicationContext context2 = new ClassPathXmlApplicationContext("net/lezhang/spring/beanbasic/config/myBeans1.xml");
+        ApplicationContext context2 = new ClassPathXmlApplicationContext("net/lezhang/spring/beanbasic/xmlconfig/myBeans1.xml");
         person = (Person)context2.getBean("person");
         person.speak();
         ((ClassPathXmlApplicationContext)context2).close();
         
-        System.out.println( "Shutting down..." );
+        System.out.println( "Successfully shutting down..." );
     }
 }

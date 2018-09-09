@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- for testing:
+1) xml config location other than default;
+2) ignored beans;
+used in App.java -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
@@ -12,17 +18,19 @@
 	<bean id="consoleWriter" class="net.lezhang.spring.autowire.ConsoleWriter"
 		primary="true" />
 	<bean name="fileWriter" class="net.lezhang.spring.autowire.FileWriter" />
-	
-	<!-- note the following beans will be ignored -->
+
+
+
+	<!-- note the following beans will be created but ignored for autowire -->
 	
 	<bean name="anotherConsoleWriter" class="net.lezhang.spring.autowire.ConsoleWriter" />
 	<!-- because the other bean has primary set to true -->
 
 	<bean name="fileWriterAnother" class="net.lezhang.spring.autowire.FileWriter" />
-	<!-- because excluded from default-autowire-candidates -->
+	<!-- because excluded from "default-autowire-candidates" above -->
 	
 	<bean name="anotherFileWriter" class="net.lezhang.spring.autowire.FileWriter"
 		autowire-candidate="false" />
-	<!-- because autowire-candidates is set to false -->
+	<!-- because "autowire-candidates" is set to false -->
 
 </beans>

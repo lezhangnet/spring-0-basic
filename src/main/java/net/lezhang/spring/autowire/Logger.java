@@ -1,7 +1,7 @@
 package net.lezhang.spring.autowire;
 
 public class Logger {
-
+    // the two writers should be autowired
     private ConsoleWriter consoleWriter;
     private FileWriter fileWriter;
     
